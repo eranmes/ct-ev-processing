@@ -90,10 +90,10 @@ ev_roots = (
         ),
 
     # # Certum CA
-    # (
-    #     "6252dc40f71143a22fde9ef7348e064251b18118",
-    #     ("1.2.616.1.113527.2.5.1.1",),
-    #     ),
+     (
+         "6252dc40f71143a22fde9ef7348e064251b18118",
+         ("1.2.616.1.113527.2.5.1.1",),
+         ),
 
     # China Internet Network Information Center EV Certificates Root
     # https://evdemo.cnnic.cn/
@@ -106,6 +106,20 @@ ev_roots = (
     # https://secure.comodo.com/
     (
         "6631bf9ef74f9eb6c9d5a60cba6abed1f7bdef7b",
+        ("1.3.6.1.4.1.6449.1.2.1.5.1",),
+        ),
+
+    # Some more comodo https://code.google.com/p/android/issues/detail?id=54479
+    (
+        "afe5d244a8d1194230ff479fe2f897bbcd7a8cb4",
+        ("1.3.6.1.4.1.6449.1.2.1.5.1",),
+        ),
+    (
+        "2b8f1b57330dbba2d07a6c51f70ee90ddab9ad8e",
+        ("1.3.6.1.4.1.6449.1.2.1.5.1",),
+        ),
+    (
+        "d1cbca5db2d52a7f693b674de5f05a1d0c957df0",
         ("1.3.6.1.4.1.6449.1.2.1.5.1",),
         ),
 
@@ -132,13 +146,13 @@ ev_roots = (
         ),
 
     # Baltimore CyberTrust Root
-    #(
-        # "d4de20d05e66fc53fe1a50882c78db2852cae474",
+    (
+         "d4de20d05e66fc53fe1a50882c78db2852cae474",
         # # Cybertrust Global Root
-        # ("1.3.6.1.4.1.6334.1.100.1",
-        #  # DigiCert
-        #  "2.16.840.1.114412.2.1"),
-        # ),
+         ("1.3.6.1.4.1.6334.1.100.1",
+          # DigiCert
+          "2.16.840.1.114412.2.1"),
+         ),
 
     # DigiCert High Assurance EV Root CA
     # https://www.digicert.com
@@ -172,13 +186,25 @@ ev_roots = (
         "b31eb1b740e36c8402dadc37d44df5d4674952f9",
         ("2.16.840.1.114028.10.1.2",),
         ),
+    # Another Entrust root - Entrust Root Certification Authority - G2
+    # Included in Mac OS X at the very least
+    (
+        "8cf427fd790c3ad166068de81e57efbb932272d4",
+        ("2.16.840.1.114028.10.1.2",),
+        ),
+    # Old Entrust root
+    # See https://bugzilla.mozilla.org/show_bug.cgi?id=849833
+    (
+        "801d62d07b449d5c5c035c98ea61fa443c2a58fe",
+        ("2.16.840.1.114028.10.1.2",),
+        ),
 
     # Entrust-DigiCert cross-signed intermediate
     # Entrust.net Certification Authority (2048)
-    # (
-    #     "503006091d97d4f5ae39f7cbe7927d7d652d3431",
-    #     ("2.16.840.1.114412.2.1",),
-    #     ),
+     (
+         "503006091d97d4f5ae39f7cbe7927d7d652d3431",
+         ("2.16.840.1.114412.2.1",),
+         ),
 
     # Equifax Secure Certificate Authority (GeoTrust)
     # https://www.geotrust.com/
@@ -232,6 +258,12 @@ ev_roots = (
         "d69b561148f01c77c54578c10926df5b856976ad",
         ("1.3.6.1.4.1.4146.1.1",),
         ),
+    # GlobalSign Root CA - phased out
+    (
+        "2f173f7de99667afa57af80aa2d1b12fac830338",
+        ("1.3.6.1.4.1.4146.1.1",),
+        ),
+
 
     # Go Daddy Class 2 Certification Authority
     # https://www.godaddy.com/
@@ -298,10 +330,10 @@ ev_roots = (
 
     # # QuoVadis Root (cross-signing QuoVadis Root CA 2)
     # # https://www.quovadis.bm/
-    # (
-    #     "de3f40bd5093d39b6c60f6dabc076201008976c9",
-    #     ("1.3.6.1.4.1.8024.0.2.100.1.2",),
-    #     ),
+     (
+         "de3f40bd5093d39b6c60f6dabc076201008976c9",
+         ("1.3.6.1.4.1.8024.0.2.100.1.2",),
+         ),
 
 
     # SecureTrust CA, SecureTrust Corporation
@@ -339,19 +371,21 @@ ev_roots = (
         ("1.3.6.1.4.1.23223.1.1.1",),
         ),
 
+    # Re-added by eran
     # # StartCom Certification Authority G2
     # # https://www.startssl.com/
-    # (
-    #     "31f1fd68226320eec63b3f9dea4a3e537c7c3917",
-    #     ("1.3.6.1.4.1.23223.1.1.1",),
-    #     ),
+     (
+         "31f1fd68226320eec63b3f9dea4a3e537c7c3917",
+         ("1.3.6.1.4.1.23223.1.1.1",),
+         ),
 
+    # Re-added by eran
     # # StartCom Certification Authority (SHA2)
     # # https://www.startssl.com/
-    # (
-    #     "a3f1333fe242bfcfc5d14e8f394298406810d1a0",
-    #     ("1.3.6.1.4.1.23223.1.1.1",),
-    #     ),
+     (
+         "a3f1333fe242bfcfc5d14e8f394298406810d1a0",
+         ("1.3.6.1.4.1.23223.1.1.1",),
+         ),
 
     # Starfield Class 2 Certification Authority
     # https://www.starfieldtech.com/
@@ -409,6 +443,12 @@ ev_roots = (
         "f18b538d1be903b6a6f056435b171589caf36bf2",
         ("2.16.840.1.113733.1.7.48.1",),
         ),
+    # Thawte Root 2
+    # Thawte Premium Server CA - http://www.thawte.com/roots/
+    (
+        "e0ab059420725493056062023670f7cd2efc6666",
+        ("2.16.840.1.113733.1.7.48.1",),
+        ),
 
     # TWCA Global Root CA
     # https://evssldemo3.twca.com.tw/index.html
@@ -452,12 +492,13 @@ ev_roots = (
         ("2.16.840.1.114413.1.7.23.3", "2.16.840.1.114414.1.7.23.3"),
         ),
 
+    # Re-added by eran
     # # ValiCert Class 1 Policy Validation Authority
-    # (
-    #     "e5df743cb601c49b9843dcab8ce86a81109fe48e",
-    #     # SECOM
-    #     ("1.2.392.200091.100.721.1",),
-    # ),
+    (
+        "e5df743cb601c49b9843dcab8ce86a81109fe48e",
+        # SECOM
+        ("1.2.392.200091.100.721.1",),
+        ),
 
     # VeriSign Class 3 Public Primary Certification Authority (MD2)
     # https://www.verisign.com/
@@ -466,12 +507,13 @@ ev_roots = (
         ("2.16.840.1.113733.1.7.23.6",),
         ),
 
+    # Re-added by eran
     # VeriSign Class 3 Public Primary Certification Authority (SHA1)
     # https://www.verisign.com/
-    # (
-    #     "a1db6393916f17e4185509400415c70240b0ae6b",
-    #     ("2.16.840.1.113733.1.7.23.6",),
-    #     ),
+    (
+        "a1db6393916f17e4185509400415c70240b0ae6b",
+        ("2.16.840.1.113733.1.7.23.6",),
+        ),
 
 
     # VeriSign Class 3 Public Primary Certification Authority - G4
