@@ -20,11 +20,6 @@ FLAGS = gflags.FLAGS
 gflags.DEFINE_integer("multi", 1, "Number of cert parsing processes to use in "
                       "addition to the main process and the network process.")
 
-gflags.DEFINE_integer("hash_trim", 8, "Number of bytes of the SHA-256 digest "
-                      "to use in the whitelist.")
-
-gflags.DEFINE_string("output", "ev_cert_hashes.bin", "Output filename")
-
 gflags.DEFINE_string("output_directory", "ev_certs",
                      "Output directory for individual EV certificates.")
 
@@ -39,14 +34,6 @@ def ev_match(certificate, entry_type, extra_data, certificate_index):
     try:
         for policy in certificate.policies():
             if policy['policyIdentifier'] in ev.EV_POLICIES:
-                """
-                h = hashlib.sha256()
-                h.update(certificate.to_der())
-                lock.acquire()
-                output_file.write(h.digest()[0:FLAGS.hash_trim])
-                output_file.flush()
-                lock.release()
-                """
                 open(os.path.join(
                     FLAGS.output_directory,
                     "cert_%d.der" % certificate_index), "wb"
