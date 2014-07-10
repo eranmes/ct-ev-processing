@@ -143,7 +143,14 @@ def main():
     p.join()
     print "Out of %d certificates %d did not chain to a known root" % (
             len(calculated_hashes), calculated_hashes.count(None))
-    pickle.dump(calculated_hashes, open(FLAGS.output, "wb"))
+    pickle.dump(calculated_hashes,
+                open(FLAGS.output.replace(".bin", ".pickle"), "wb"))
+    hashes_set = set(calculated_hashes)
+    hashes_set.remove(None)
+
+    with open(FLAGS.output, 'wb') as f:
+        for h in hashes_set:
+            f.write(h)
 
 
 if __name__ == '__main__':
