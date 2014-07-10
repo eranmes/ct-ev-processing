@@ -27,7 +27,10 @@ def read_hashes(from_file, hash_length):
 
 
 def create_delta_diff(hashes_list, hash_length):
+    # Must be sorted for delta diff to make sense
     assert sorted(hashes_list)
+    # Must not contain duplicates.
+    assert len(hashes_list) == len(set(hashes_list))
     hash_len_bits = hash_length * 8
     outarray = BitArray(bytes = hashes_list[0], length=hash_len_bits)
 
@@ -39,14 +42,13 @@ def create_delta_diff(hashes_list, hash_length):
             i += 1
         assert i < 64
         bits_differ = hash_len_bits - i
-        outarray.append(Bits(uint=bits_differ, length=7))
+        assert bits_differ > 0 and bits_differ < 65
+        outarray.append(Bits(uint=(bits_differ - 1), length=6))
         diferring_bits = curr[i:]
         #print i, bits_differ, diferring_bits.length
         assert bits_differ == diferring_bits.length
         outarray.append(diferring_bits)
         prev = curr
-    # EOF marker
-    outarray.append(Bits(uint=65, length=7))
     return outarray.tobytes()
 
 
@@ -56,11 +58,9 @@ def uncompress_delta_diff(compressed_input, hash_length):
     hash_len_bits = hash_length * 8
     prev = instream.read("bits:%d" % hash_len_bits)
     ret_list.append(prev.tobytes())
-    while instream.bitpos < instream.length:
-        curr_diff_len = instream.read("uint:7")
-        if curr_diff_len > hash_len_bits:
-            # EOF
-            break
+    # Must always have at least 6 bits to read.
+    while (instream.bitpos + 6) < instream.length:
+        curr_diff_len = instream.read("uint:6") + 1
         curr_diff = instream.read("bits:%d" % curr_diff_len)
         curr_item = prev[:hash_len_bits - curr_diff_len] + curr_diff
         assert curr_item.length == hash_len_bits
