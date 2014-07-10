@@ -45,6 +45,8 @@ def create_delta_diff(hashes_list, hash_length):
         assert bits_differ == diferring_bits.length
         outarray.append(diferring_bits)
         prev = curr
+    # EOF marker
+    outarray.append(Bits(uint=65, length=7))
     return outarray.tobytes()
 
 
@@ -56,6 +58,9 @@ def uncompress_delta_diff(compressed_input, hash_length):
     ret_list.append(prev.tobytes())
     while instream.bitpos < instream.length:
         curr_diff_len = instream.read("uint:7")
+        if curr_diff_len > hash_len_bits:
+            # EOF
+            break
         curr_diff = instream.read("bits:%d" % curr_diff_len)
         if curr_diff_len == hash_len_bits:
             curr_item = curr_diff
