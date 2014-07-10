@@ -62,11 +62,8 @@ def uncompress_delta_diff(compressed_input, hash_length):
             # EOF
             break
         curr_diff = instream.read("bits:%d" % curr_diff_len)
-        if curr_diff_len == hash_len_bits:
-            curr_item = curr_diff
-        else:
-            curr_item = prev[:hash_len_bits - curr_diff_len] + curr_diff
-            assert curr_item.length == hash_len_bits
+        curr_item = prev[:hash_len_bits - curr_diff_len] + curr_diff
+        assert curr_item.length == hash_len_bits
         ret_list.append(curr_item.tobytes())
         prev = curr_item
     return ret_list
