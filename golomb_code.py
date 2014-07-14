@@ -65,8 +65,7 @@ def golomb_encode(hashes_list, hash_length, M):
     prev = BitArray(bytes = hashes_list[0], length=hash_len_bits)
     for curr_hash in hashes_list[1:]:
         curr = BitArray(bytes=curr_hash, length=hash_len_bits)
-        diffbits = calculate_hashes_diff(prev, curr)
-        N = diffbits.uint
+        N = curr.uint - prev.uint
         q = int(math.floor(N / M))
         r = N % M
         if q == 0:
@@ -81,6 +80,31 @@ def golomb_encode(hashes_list, hash_length, M):
     if not min_is_zero:
         print "Inefficient encoding: Minimum is not zero."
     return outarray.tobytes()
+
+
+def uncompress_golomb_coding(coded_bytes, hash_length, M):
+    ret_list = []
+    instream = BitStream(
+            bytes=coded_bytes, length=len(coded_bytes) * hash_length)
+    hash_len_bits = hash_length * 8
+    m_bits = int(math.log(M, 2))
+    prev = instream.read("bits:%d" % hash_len_bits)
+    ret_list.append(prev.tobytes())
+    while instream.bitpos < instream.length:
+        read_prefix=0
+        curr_bit = instream.read("uint:1")
+        while curr_bit == 1:
+            read_prefix += 1
+            curr_bit = instream.read("uint:1")
+        assert curr_bit == 0
+        r = instream.read("uint:%d" % m_bits)
+        curr_diff = read_prefix * M + r
+        curr_value_int = prev.uint + curr_diff
+        curr_value = Bits(uint=curr_value_int, length=hash_len_bits)
+        ret_list.append(curr_value.tobytes())
+        prev = curr_value
+
+    return ret_list
 
 
 def main():
@@ -98,9 +122,8 @@ def main():
     with open(FLAGS.output, 'wb') as f:
         f.write(golomb_coded_bytes)
 
-    """
     uncompressed_hashes = uncompress_golomb_coding(
-        golomb_coded_bytes, 2**FLAGS.two_power, FLAGS.hash_length)
+        golomb_coded_bytes, FLAGS.hash_length, 2**FLAGS.two_power)
 
     with open("/tmp/uncompressed_hashes", "wb") as f:
         for h in uncompressed_hashes:
@@ -108,7 +131,6 @@ def main():
     print "Original hashes: %d  Uncompressed: %d" % (
         len(hashes), len(uncompressed_hashes))
     assert uncompressed_hashes == hashes
-    """
 
 if __name__ == '__main__':
     sys.argv = FLAGS(sys.argv)
