@@ -1,15 +1,10 @@
 #!/usr/bin/env python
+"""Compress the hashes list using Golomb coding."""
 
-from collections import namedtuple
-import hashlib
 import math
-import os
-import re
 import sys
 
 from bitstring import BitArray, Bits, BitStream
-from ct.crypto import cert
-from ct.crypto import pem
 
 import gflags
 
@@ -21,6 +16,7 @@ gflags.DEFINE_integer("hash_length", 8, "Length of each hash in bytes.")
 gflags.DEFINE_integer("two_power", 50, "Power of 2 for M (M=2**two_power).")
 
 def read_hashes(from_file, hash_length):
+    """Reads a list of sorted hashes from a file."""
     with open(from_file, "rb") as f:
         raw_hashes = f.read()
         return [raw_hashes[i * hash_length:(i + 1) * hash_length]
@@ -67,7 +63,7 @@ def uncompress_golomb_coding(coded_bytes, hash_length, M):
     prev = instream.read("bits:%d" % hash_len_bits)
     ret_list.append(prev.tobytes())
     while instream.bitpos < instream.length:
-        read_prefix=0
+        read_prefix = 0
         curr_bit = instream.read("uint:1")
         while curr_bit == 1:
             read_prefix += 1
@@ -84,6 +80,7 @@ def uncompress_golomb_coding(coded_bytes, hash_length, M):
 
 
 def main():
+    """Reads and compresses the hashes."""
     hashes = read_hashes(FLAGS.input, FLAGS.hash_length)
     hashes.sort()
 
